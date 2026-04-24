@@ -1,7 +1,5 @@
 import { Context } from 'hono';
 
-const SUPABASE_JWT_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
 interface JWTPayload {
   sub: string;
   email: string;
@@ -14,7 +12,6 @@ function decodeJWT(token: string): JWTPayload | null {
     const parts = token.split('.');
     if (parts.length !== 3) return null;
 
-    // Decode payload (second part)
     const payload = parts[1];
     const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
     return JSON.parse(decoded) as JWTPayload;
@@ -45,7 +42,9 @@ export async function verifyJWT(c: Context): Promise<string | null> {
   return payload.sub;
 }
 
-export function requireAuth(handler: (c: Context, userId: string) => Promise<Response>) {
+export function requireAuth(
+  handler: (c: Context, userId: string) => Promise<Response>
+) {
   return async (c: Context) => {
     const userId = await verifyJWT(c);
 
@@ -57,7 +56,9 @@ export function requireAuth(handler: (c: Context, userId: string) => Promise<Res
   };
 }
 
-export function optionalAuth(handler: (c: Context, userId: string | null) => Promise<Response>) {
+export function optionalAuth(
+  handler: (c: Context, userId: string | null) => Promise<Response>
+) {
   return async (c: Context) => {
     const userId = await verifyJWT(c);
     return handler(c, userId);
