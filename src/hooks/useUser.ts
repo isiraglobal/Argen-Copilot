@@ -37,7 +37,7 @@ export function useUser() {
         const {
           data: { user: authUser },
           error: authError,
-        } = await supabase.auth.getUser();
+        } = await supabase?.auth.getUser();
 
         if (authError) throw authError;
 
@@ -72,7 +72,7 @@ export function useUser() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase?.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
         setUser(session.user as AuthUser);
         getUser();
