@@ -3,18 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface TeamDetail {
-  id: string;
-  name: string;
-  description: string;
-  owner_id: string;
-  member_count: number;
-  members: Array<{ id: string; email: string; role: string }>;
-  plan_type: string;
-  ai_pool_monthly: number;
-  ai_pool_used: number;
-}
-
 export default function TeamDetail() {
   const { id: teamId } = useParams<{ id: string }>();
   const { user } = useUser();
