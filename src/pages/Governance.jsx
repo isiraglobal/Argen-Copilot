@@ -2,14 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface GovernanceSettings {
-  autoModerationEnabled: boolean;
-  contentFilterLevel: string;
-  plagiarismCheckEnabled: boolean;
-  dailyLimit: number;
-  monthlyLimit: number;
-}
-
 interface AuditLog {
   id: string;
   action: string;
