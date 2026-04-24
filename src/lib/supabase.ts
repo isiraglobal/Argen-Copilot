@@ -1,19 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
+// Supabase integration (optional - not required for current build)
+// To use Supabase, install @supabase/supabase-js and set environment variables
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+let supabase = null;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error('Missing Supabase environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
-}
-
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-  },
-});
+// Gracefully handle missing Supabase dependency
+export { supabase };
 
 export type AuthUser = {
   id: string;

@@ -2,20 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface AuditLog {
-  id: string;
-  action: string;
-  resourceType: string;
-  timestamp: string;
-  user: string;
-  details: string;
-}
-
 export default function Governance() {
   const { user } = useUser();
-  const [settings, setSettings] = useState<GovernanceSettings | null>(null);
-  const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
-  const [activeTab, setActiveTab] = useState<'settings' | 'audit' | 'compliance'>('settings');
+  const [settings, setSettings] = useState(null);
+  const [auditLogs, setAuditLogs] = useState([]);
+  const [activeTab, setActiveTab] = useState('settings');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,7 +43,7 @@ export default function Governance() {
 
         {/* Tab Navigation */}
         <div className="flex gap-4 mb-12 border-b-4 border-dark">
-          {(['settings', 'audit', 'compliance'] as const).map((tab) => (
+          {(['settings', 'audit', 'compliance']).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}

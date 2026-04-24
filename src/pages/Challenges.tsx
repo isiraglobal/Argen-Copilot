@@ -268,24 +268,3 @@ export function Challenges() {
     </div>
   );
 }
-          </select>
-          <select
-            value={filters.completion}
-            onChange={(e) => setFilters({ ...filters, completion: e.target.value })}
-            className="w-full"
-          >
-            <option value="all">All Status</option>
-            <option value="completed">Completed</option>
-            <option value="incomplete">Incomplete</option>
-          </select>
-        </div>
-
-        {/* Empty state */}
-        <div className="retro-box p-12 text-center">
-          <p className="text-lg mb-4">Loading challenges...</p>
-          <p className="text-sm text-gray-600">Quota: {quota?.used_this_month || 0} / {quota?.monthly_limit || 5}</p>
-        </div>
-      </div>
-    </div>
-  );
-}

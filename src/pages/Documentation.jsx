@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 
-interface DocSection {
-  id: string;
-  title: string;
-  content: string;
-  subsections: string[];
-}
-
 export default function Documentation() {
   const [selectedSection, setSelectedSection] = useState('getting-started');
 
-  const sections: Record<string, DocSection> = {
+  const sections = {
     'getting-started': {
       id: 'getting-started',
       title: 'Getting Started',

@@ -3,7 +3,7 @@ import { AuthGatekeeper } from '@/components/auth/AuthGatekeeper';
 import { Home } from '@/pages/Home';
 import { Challenges } from '@/pages/Challenges';
 import ChallengeDetailNew from '@/pages/ChallengeDetailNew';
-import { Profile } from '@/pages/Profile';
+import Profile from '@/pages/Profile';
 import Explore from '@/pages/Explore';
 import Teams from '@/pages/Teams';
 import TeamDetail from '@/pages/TeamDetail';

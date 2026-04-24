@@ -2,17 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface APIKey {
-  id: string;
-  name: string;
-  keyPrefix: string;
-  created_at: string;
-  last_used: string | null;
-}
-
 export default function APIAccess() {
   const { user } = useUser();
-  const [apiKeys, setApiKeys] = useState<APIKey[]>([]);
+  const [apiKeys, setApiKeys] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [keyName, setKeyName] = useState('');
   const [loading, setLoading] = useState(true);

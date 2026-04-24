@@ -2,18 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface AnalyticsData {
-  totalSubmissions: number;
-  submissionsThisWeek: number;
-  avgScore: number;
-  challengesCompleted: number;
-  currentStreak: number;
-  learningProgress: number;
-}
-
 export default function Analytics() {
   const { user } = useUser();
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [analytics, setAnalytics] = useState(null);
   const [dateRange, setDateRange] = useState('week');
   const [loading, setLoading] = useState(true);
 

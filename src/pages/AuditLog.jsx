@@ -2,19 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface AuditEntry {
-  id: string;
-  action: string;
-  resourceType: string;
-  resourceId: string;
-  timestamp: string;
-  details: string;
-  user?: string;
-}
-
 export default function AuditLog() {
   const { user } = useUser();
-  const [logs, setLogs] = useState<AuditEntry[]>([]);
+  const [logs, setLogs] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);

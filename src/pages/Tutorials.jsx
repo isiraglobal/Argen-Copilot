@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface Tutorial {
-  id: string;
-  title: string;
-  description: string;
-  duration: number;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  steps: number;
-  completed: boolean;
-}
-
 export default function Tutorials() {
   const navigate = useNavigate();
-  const [tutorials] = useState<Tutorial[]>([
+  const [tutorials] = useState([
     {
       id: 'intro',
       title: 'Introduction to Prompting',
@@ -43,13 +33,13 @@ export default function Tutorials() {
     },
   ]);
 
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'all' | 'beginner' | 'intermediate' | 'advanced'>('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
 
   const filtered = tutorials.filter(
     (t) => selectedDifficulty === 'all' || t.difficulty === selectedDifficulty
   );
 
-  const difficultyColor: Record<string, string> = {
+  const difficultyColor = {
     beginner: 'bg-green-dark',
     intermediate: 'bg-yellow-600',
     advanced: 'bg-red-600',
@@ -66,7 +56,7 @@ export default function Tutorials() {
 
         {/* Filter */}
         <div className="flex gap-4 mb-12 flex-wrap">
-          {(['all', 'beginner', 'intermediate', 'advanced'] as const).map((level) => (
+          {['all', 'beginner', 'intermediate', 'advanced'].map((level) => (
             <button
               key={level}
               onClick={() => setSelectedDifficulty(level)}

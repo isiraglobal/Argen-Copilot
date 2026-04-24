@@ -2,17 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface AdminStats {
-  users: { total: number; activeThisMonth: number; newThisMonth: number };
-  submissions: { total: number; thisMonth: number; avgScore: number; solvedCount: number };
-  revenue: { mrr: number; arr: number; churnRate: number };
-  engagement: { dau: number; mau: number };
-}
-
 export default function Admin() {
   const { user } = useUser();
-  const [stats, setStats] = useState<AdminStats | null>(null);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'reports'>('dashboard');
+  const [stats, setStats] = useState(null);
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +38,7 @@ export default function Admin() {
 
         {/* Tab Navigation */}
         <div className="flex gap-4 mb-12 border-b-4 border-dark">
-          {(['dashboard', 'users', 'reports'] as const).map((tab) => (
+          {(['dashboard', 'users', 'reports']).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
