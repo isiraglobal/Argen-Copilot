@@ -14,7 +14,6 @@ export default function Explore() {
     topCreators: [],
   });
   const [loading, setLoading] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export default function Explore() {
 
         {/* Filter Bar */}
         <div className="mb-8 flex gap-4 flex-wrap">
-          {(['all', 'beginner', 'intermediate', 'advanced'] as const).map((difficulty) => (
+          {['all', 'beginner', 'intermediate', 'advanced'].map((difficulty) => (
             <button
               key={difficulty}
               onClick={() => setFilter(difficulty)}
