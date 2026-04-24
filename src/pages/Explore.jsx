@@ -6,7 +6,7 @@ import { fetchApi } from '../lib/api';
 export default function Explore() {
   const { user, loading: userLoading } = useUser();
   const navigate = useNavigate();
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [challenges, setChallenges] = useState([]);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalSubmissions: 0,
