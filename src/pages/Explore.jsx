@@ -14,7 +14,8 @@ export default function Explore() {
     topCreators: [],
   });
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'beginner' | 'intermediate' | 'advanced'>('all');
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     fetchStats();
