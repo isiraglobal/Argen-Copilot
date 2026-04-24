@@ -26,6 +26,14 @@ export function useUser() {
   useEffect(() => {
     const getUser = async () => {
       try {
+        // Check if supabase is initialized
+        if (!supabase) {
+          console.error('Supabase client not initialized. Check environment variables.');
+          setError(new Error('Authentication service unavailable'));
+          setLoading(false);
+          return;
+        }
+
         const {
           data: { user: authUser },
           error: authError,
@@ -56,6 +64,11 @@ export function useUser() {
     };
 
     getUser();
+
+    // Set up auth state listener if supabase is available
+    if (!supabase) {
+      return;
+    }
 
     const {
       data: { subscription },

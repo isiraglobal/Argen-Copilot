@@ -18,6 +18,13 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
     setError('');
 
     try {
+      // Check if supabase is initialized
+      if (!supabase) {
+        setError('Authentication service is unavailable. Please check your configuration.');
+        console.error('Supabase client not initialized. Check environment variables.');
+        return;
+      }
+
       const { error: authError } = 
         mode === 'login'
           ? await supabase.auth.signInWithPassword({ email, password })
@@ -31,6 +38,7 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
       onSuccess?.();
     } catch (err) {
       setError('An error occurred. Please try again.');
+      console.error('Auth error:', err);
     } finally {
       setLoading(false);
     }
@@ -41,6 +49,14 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
     setError('');
 
     try {
+      // Check if supabase is initialized
+      if (!supabase) {
+        setError('Authentication service is unavailable. Please check your configuration.');
+        console.error('Supabase client not initialized. Check environment variables.');
+        setLoading(false);
+        return;
+      }
+
       const { error: authError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -53,6 +69,7 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
       }
     } catch (err) {
       setError('OAuth login failed. Please try again.');
+      console.error('OAuth error:', err);
     } finally {
       setLoading(false);
     }

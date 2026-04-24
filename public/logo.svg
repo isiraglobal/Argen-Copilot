@@ -1,0 +1,15 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="white"/>
+  
+  <!-- ArGe Text -->
+  <text x="150" y="380" font-size="240" font-weight="bold" font-family="Arial, sans-serif" fill="black">
+    ArGe
+  </text>
+  
+  <!-- Lightning Bolt Shape (retro style) -->
+  <g fill="#2d7563" transform="translate(550, 200)">
+    <!-- Top part of lightning -->
+    <polygon points="40,0 20,80 60,80 20,200 80,90 40,90 80,0"/>
+  </g>
+</svg>

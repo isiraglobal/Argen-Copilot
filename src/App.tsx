@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthGatekeeper } from '@/components/auth/AuthGatekeeper';
+import { Header } from '@/components/layout/Header';
 import { Home } from '@/pages/Home';
 import { Challenges } from '@/pages/Challenges';
 import ChallengeDetailNew from '@/pages/ChallengeDetailNew';
@@ -24,6 +25,7 @@ function App() {
   return (
     <Router>
       <AuthGatekeeper>
+        <Header />
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
