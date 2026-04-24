@@ -4,7 +4,7 @@ import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
 export default function TeamDetail() {
-  const { id: teamId } = useParams<{ id: string }>();
+  const { id: teamId } = useParams();
   const { user } = useUser();
   const navigate = useNavigate();
   const [team, setTeam] = useState<TeamDetail | null>(null);
