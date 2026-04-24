@@ -27,8 +27,8 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
 
       const { error: authError } = 
         mode === 'login'
-          ? await supabase?.auth.signInWithPassword({ email, password })
-          : await supabase?.auth.signUp({ email, password });
+          ? await supabase.auth.signInWithPassword({ email, password })
+          : await supabase.auth.signUp({ email, password });
 
       if (authError) {
         setError(authError.message);
@@ -57,7 +57,7 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
         return;
       }
 
-      const { error: authError } = await supabase?.auth.signInWithOAuth({
+      const { error: authError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,

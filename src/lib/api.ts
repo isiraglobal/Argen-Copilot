@@ -18,7 +18,7 @@ async function getAuthHeader(): Promise<string | null> {
     if (!supabase) return null;
     const {
       data: { session },
-    } = await supabase?.auth.getSession();
+    } = await supabase.auth.getSession();
     return session?.access_token ? `Bearer ${session.access_token}` : null;
   } catch {
     return null;
