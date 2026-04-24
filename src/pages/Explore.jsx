@@ -3,15 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { fetchApi } from '../lib/api';
 
-interface Challenge {
-  id: string;
-  title: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  category: string;
-  points: number;
-  completedByUser: boolean;
-}
-
 export default function Explore() {
   const { user, loading: userLoading } = useUser();
   const navigate = useNavigate();
