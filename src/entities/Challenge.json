@@ -1,0 +1,65 @@
+{
+  "name": "Challenge",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "hard",
+        "expert"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "reasoning",
+        "summarization",
+        "creative",
+        "coding",
+        "marketing",
+        "automation",
+        "product_design"
+      ]
+    },
+    "constraints": {
+      "type": "string"
+    },
+    "example_prompt": {
+      "type": "string"
+    },
+    "expected_outcome": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_premium": {
+      "type": "boolean",
+      "default": false
+    },
+    "base_points": {
+      "type": "number",
+      "default": 100
+    },
+    "course_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "difficulty",
+    "category"
+  ]
+}

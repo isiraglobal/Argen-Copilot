@@ -1,0 +1,32 @@
+{
+  "name": "UserProgress",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "challenge_id": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "points_earned": {
+      "type": "number"
+    },
+    "time_taken": {
+      "type": "number"
+    },
+    "best_score": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "user_email",
+    "challenge_id"
+  ]
+}

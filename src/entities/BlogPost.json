@@ -1,0 +1,42 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Insights",
+        "Tips",
+        "Case Study",
+        "Technical",
+        "Tutorials",
+        "Community"
+      ]
+    },
+    "published": {
+      "type": "boolean",
+      "default": false
+    },
+    "featured_image": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "excerpt",
+    "content",
+    "category"
+  ]
+}

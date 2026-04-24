@@ -1,0 +1,41 @@
+{
+  "name": "Submission",
+  "type": "object",
+  "properties": {
+    "challenge_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "prompt_text": {
+      "type": "string"
+    },
+    "ai_response": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number"
+    },
+    "scores_breakdown": {
+      "type": "object"
+    },
+    "ai_reflection": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "evaluated",
+        "failed"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "challenge_id",
+    "user_email",
+    "prompt_text"
+  ]
+}

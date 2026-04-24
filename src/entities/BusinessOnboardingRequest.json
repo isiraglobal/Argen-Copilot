@@ -1,0 +1,61 @@
+{
+  "name": "BusinessOnboardingRequest",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string"
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "team_size": {
+      "type": "string"
+    },
+    "use_case": {
+      "type": "string"
+    },
+    "current_ai_usage": {
+      "type": "string"
+    },
+    "needs_sources": {
+      "type": "boolean",
+      "default": false
+    },
+    "needs_tools": {
+      "type": "boolean",
+      "default": false
+    },
+    "estimated_price": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "contacted"
+      ],
+      "default": "pending"
+    },
+    "admin_notes": {
+      "type": "string"
+    },
+    "processed_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "company_name",
+    "contact_name",
+    "email",
+    "team_size",
+    "use_case"
+  ]
+}

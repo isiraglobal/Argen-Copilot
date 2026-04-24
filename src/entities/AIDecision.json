@@ -1,0 +1,98 @@
+{
+  "name": "AIDecision",
+  "type": "object",
+  "properties": {
+    "argen_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "intent_declaration": {
+      "type": "string"
+    },
+    "constraints_applied": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "role": {
+      "type": "string"
+    },
+    "model_used": {
+      "type": "string"
+    },
+    "confidence_level": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "prompt_text": {
+      "type": "string"
+    },
+    "ai_output": {
+      "type": "string"
+    },
+    "human_approvals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "final_action_taken": {
+      "type": "string"
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "cost_usd": {
+      "type": "number"
+    },
+    "legitimacy_status": {
+      "type": "string",
+      "enum": [
+        "official",
+        "informal",
+        "blocked",
+        "downgraded"
+      ],
+      "default": "official"
+    },
+    "team_id": {
+      "type": "string"
+    },
+    "can_be_defended": {
+      "type": "boolean",
+      "default": true
+    },
+    "can_be_audited": {
+      "type": "boolean",
+      "default": true
+    },
+    "can_be_attributed": {
+      "type": "boolean",
+      "default": true
+    },
+    "can_be_costed": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "argen_id",
+    "user_email",
+    "intent_declaration",
+    "risk_level",
+    "legitimacy_status"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Tutorial",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    "published": {
+      "type": "boolean",
+      "default": false
+    },
+    "video_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "level"
+  ]
+}

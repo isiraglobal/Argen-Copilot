@@ -1,0 +1,33 @@
+{
+  "name": "Documentation",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Getting Started",
+        "Best Practices",
+        "Advanced Techniques",
+        "Reference"
+      ]
+    },
+    "order": {
+      "type": "number"
+    },
+    "published": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "content",
+    "category"
+  ]
+}

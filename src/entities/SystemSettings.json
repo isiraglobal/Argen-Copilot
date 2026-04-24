@@ -1,0 +1,22 @@
+{
+  "name": "SystemSettings",
+  "type": "object",
+  "properties": {
+    "setting_key": {
+      "type": "string"
+    },
+    "setting_value": {
+      "type": "object"
+    },
+    "description": {
+      "type": "string"
+    },
+    "last_updated_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "setting_key",
+    "setting_value"
+  ]
+}

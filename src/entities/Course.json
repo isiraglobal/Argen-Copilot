@@ -1,0 +1,42 @@
+{
+  "name": "Course",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "total_challenges": {
+      "type": "number"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "featured",
+        "interview",
+        "fundamentals",
+        "advanced"
+      ]
+    },
+    "is_premium": {
+      "type": "boolean",
+      "default": false
+    },
+    "total_points": {
+      "type": "number"
+    },
+    "estimated_hours": {
+      "type": "number"
+    },
+    "team_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "total_challenges"
+  ]
+}

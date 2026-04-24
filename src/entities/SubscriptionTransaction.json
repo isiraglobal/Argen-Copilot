@@ -1,0 +1,73 @@
+{
+  "name": "SubscriptionTransaction",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "receipt_id": {
+      "type": "string"
+    },
+    "membership_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "plan_type": {
+      "type": "string",
+      "enum": [
+        "free",
+        "creator",
+        "architect"
+      ]
+    },
+    "billing_cycle": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "yearly"
+      ]
+    },
+    "amount": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "transaction_type": {
+      "type": "string",
+      "enum": [
+        "purchase",
+        "renewal",
+        "cancellation",
+        "upgrade",
+        "downgrade"
+      ]
+    },
+    "is_trial": {
+      "type": "boolean",
+      "default": false
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "processed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email",
+    "plan_type",
+    "status",
+    "transaction_type"
+  ]
+}
