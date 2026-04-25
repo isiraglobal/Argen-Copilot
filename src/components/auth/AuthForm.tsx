@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 
 interface AuthFormProps {
@@ -7,6 +8,7 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,7 @@ export function AuthForm({ mode = 'login', onSuccess }: AuthFormProps) {
       }
 
       onSuccess?.();
+      navigate('/challenges');
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error('Auth error:', err);

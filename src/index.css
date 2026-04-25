@@ -100,3 +100,627 @@ input:focus, textarea:focus, select:focus {
 textarea.no-paste {
   -webkit-user-modify: read-only;
 }
+
+/* Base44-style app shell */
+.argen-app-header {
+  height: 68px;
+  padding: 13px 16px;
+  background: #f5f1e8;
+  border-bottom: 4px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.argen-left-actions {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.argen-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.argen-logo-link img {
+  width: 36px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.argen-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.argen-icon-btn {
+  width: 50px;
+  height: 38px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  color: #1a1a1a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.argen-icon-btn-dark {
+  background: #1a1a1a;
+  color: #f5f1e8;
+}
+
+.argen-bottom-nav {
+  position: fixed;
+  z-index: 50;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #f5f1e8;
+  border-top: 4px solid #1a1a1a;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.argen-bottom-nav a {
+  color: #1a1a1a;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.argen-page {
+  min-height: calc(100vh - 68px);
+  background: #f5f1e8;
+  padding: 64px 16px 104px;
+}
+
+.argen-page-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.argen-page-title {
+  font-size: clamp(40px, 9vw, 64px);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.argen-page-subtitle {
+  font-size: 17px;
+  line-height: 1.55;
+  opacity: 0.78;
+  margin: 0;
+}
+
+.argen-panel {
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  color: #1a1a1a;
+  padding: 28px;
+}
+
+.argen-panel-dark {
+  border: 3px solid #1a1a1a;
+  background: #1a1a1a;
+  color: #f5f1e8;
+  padding: 28px;
+}
+
+.argen-action {
+  border: 3px solid #1a1a1a;
+  background: #2d5f4f;
+  color: #f5f1e8;
+  padding: 14px 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.challenges-title {
+  font-size: clamp(40px, 10vw, 56px);
+  line-height: 0.98;
+}
+
+.challenges-generate {
+  min-width: 96px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.challenges-search-row {
+  display: grid;
+  grid-template-columns: 1fr 88px;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.challenges-search-box {
+  min-height: 62px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+
+.challenges-search-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 900;
+  outline: 0;
+}
+
+.challenges-search-box input::placeholder {
+  color: #8f93a0;
+  opacity: 0.85;
+}
+
+.challenges-filter-btn {
+  min-height: 62px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  color: #1a1a1a;
+  padding: 0 12px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.challenges-filter-btn.is-active {
+  background: #2d5f4f;
+  color: #f5f1e8;
+}
+
+.challenges-filter-panel {
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  padding: 28px;
+}
+
+.filter-group h4 {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 900;
+  opacity: 0.6;
+}
+
+.filter-group > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-group button {
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  color: #1a1a1a;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.filter-group button.is-selected {
+  background: #1a1a1a;
+  color: #f5f1e8;
+}
+
+.challenge-card {
+  min-height: 226px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  color: #1a1a1a;
+  padding: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.challenge-card:hover {
+  background: #1a1a1a;
+  color: #f5f1e8;
+}
+
+.challenge-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  background: #1a1a1a;
+  color: #f5f1e8;
+  border: 0;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.challenge-card:hover .challenge-badge {
+  background: #f5f1e8;
+  color: #1a1a1a;
+}
+
+.challenge-card-title {
+  margin: 0 0 16px;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.challenge-card-description {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  opacity: 0.82;
+}
+
+.challenge-card-stats {
+  margin-top: auto;
+  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 900;
+  opacity: 0.72;
+}
+
+.challenge-card-stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .argen-app-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .argen-header-actions {
+    gap: 10px;
+  }
+
+  .argen-icon-btn {
+    width: 45px;
+    height: 38px;
+    padding: 0;
+  }
+
+  .argen-logo-link img {
+    width: 34px;
+    height: 22px;
+  }
+
+  .argen-page {
+    padding-top: 66px;
+  }
+
+  .challenge-card {
+    padding: 32px;
+  }
+}
+
+.explore-inner {
+  max-width: 1180px;
+}
+
+.explore-hero {
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.explore-hero h1 {
+  margin: 0 0 24px;
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+.quote-card {
+  max-width: 760px;
+  margin: 0 auto;
+  border: 3px solid #1a1a1a;
+  background: #2d5f4f;
+  color: #f5f1e8;
+  padding: 24px;
+}
+
+.quote-card svg {
+  margin: 0 auto 12px;
+}
+
+.quote-card p {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 900;
+}
+
+.quote-card span {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.explore-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin-bottom: 80px;
+}
+
+.explore-metrics article {
+  min-height: 154px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  padding: 28px;
+}
+
+.explore-metrics .plan-card {
+  background: #2d5f4f;
+  color: #f5f1e8;
+}
+
+.explore-metrics span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.explore-metrics strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.explore-metrics small,
+.explore-metrics em {
+  display: block;
+  font-size: 14px;
+  font-style: normal;
+  opacity: 0.82;
+}
+
+.explore-metrics em {
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.continue-section,
+.courses-section {
+  margin-bottom: 80px;
+}
+
+.continue-section h2,
+.courses-section h2 {
+  margin: 0 0 28px;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.continue-card {
+  border: 3px solid #1a1a1a;
+  background: #2d5f4f;
+  color: #f5f1e8;
+  padding: 44px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  text-decoration: none;
+}
+
+.continue-card > div > span {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.continue-card h3 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.18;
+  font-weight: 900;
+}
+
+.continue-progress {
+  grid-column: 1 / -1;
+}
+
+.continue-progress > div {
+  height: 12px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  margin-bottom: 8px;
+}
+
+.continue-progress span {
+  display: block;
+  height: 100%;
+  background: #f5f1e8;
+  filter: invert(1);
+}
+
+.continue-progress p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 900;
+  opacity: 0.9;
+}
+
+.section-heading-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.section-heading-row p {
+  margin: 0;
+  font-size: 15px;
+  opacity: 0.78;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.course-card {
+  min-height: 320px;
+  border: 3px solid #1a1a1a;
+  background: #2d5f4f;
+  color: #f5f1e8;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+}
+
+.course-eyebrow {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.82;
+}
+
+.course-card h3 {
+  margin: 0 auto auto 0;
+  font-size: 26px;
+  line-height: 1.22;
+  font-weight: 900;
+}
+
+.course-progress {
+  margin-top: 22px;
+  margin-bottom: 18px;
+}
+
+.course-progress-track {
+  height: 11px;
+  border: 3px solid #1a1a1a;
+  background: #f5f1e8;
+  margin-bottom: 8px;
+}
+
+.course-progress-track div {
+  height: 100%;
+  background: #1a1a1a;
+}
+
+.course-progress-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 900;
+  opacity: 0.9;
+}
+
+.course-stats {
+  margin-top: 28px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.course-stats strong {
+  display: block;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.course-stats span {
+  display: block;
+  margin-top: 5px;
+}
+
+.course-pro {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: 3px solid #1a1a1a;
+  background: #1a1a1a;
+  color: #f5f1e8;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+@media (max-width: 760px) {
+  .explore-metrics,
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .continue-card {
+    padding: 32px;
+  }
+
+  .continue-card h3 {
+    font-size: 28px;
+  }
+}

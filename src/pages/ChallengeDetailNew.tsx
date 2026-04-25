@@ -46,6 +46,8 @@ export function ChallengeDetailNew() {
   const [hasRun, setHasRun] = useState(false);
   const [output, setOutput] = useState('');
   const [scores, setScores] = useState<any>(null);
+  const [submitError, setSubmitError] = useState('');
+  const [submittedScore, setSubmittedScore] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'desc' | 'guide'>('desc');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -139,31 +141,29 @@ export function ChallengeDetailNew() {
       });
 
       // Submit
-      const response = await post('/api/submissions', {
+      const response = await post<any>('/api/submissions', {
         challenge_id: challenge.id,
         prompt_text: prompt,
-        clarity_score: Math.round(scores.clarity),
-        completeness_score: Math.round(scores.completeness),
-        creativity_score: Math.round(scores.creativity),
-        effectiveness_score: Math.round(scores.effectiveness),
-        overall_score: Math.round(scores.overall),
-        feedback: scores.feedback,
-        route_mode: route.mode,
+        mode: route.mode === 'api' ? 'api' : 'offline',
       });
 
-      const isSolved = scores.overall >= 70;
-      alert(
-        isSolved
-          ? `Challenge Solved! Score: ${Math.round(scores.overall)}%`
-          : `Submitted! Score: ${Math.round(scores.overall)}%`
-      );
+      setScores({
+        clarity: response.clarity_score,
+        completeness: response.completeness_score,
+        creativity: response.creativity_score,
+        effectiveness: response.effectiveness_score,
+        overall: response.overall_score,
+        feedback: response.feedback,
+      });
+      setSubmittedScore(response.overall_score);
+      setSubmitError('');
 
-      if (isSolved) {
+      if (response.is_solved) {
         loadChallenge();
       }
     } catch (error) {
       console.error('Error submitting:', error);
-      alert('Failed to submit');
+      setSubmitError('Failed to submit. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -321,6 +321,10 @@ export function ChallengeDetailNew() {
               {!hasRun ? 'RUN FIRST' : 'SUBMIT'}
             </button>
           </div>
+          {submitError && <p className="text-xs font-bold text-red-600 mt-2">{submitError}</p>}
+          {submittedScore !== null && (
+            <p className="text-xs font-bold text-green-700 mt-2">Saved score: {submittedScore}%</p>
+          )}
         </div>
 
         {/* Output */}
@@ -329,8 +333,12 @@ export function ChallengeDetailNew() {
             <h4 className="font-bold mb-2">Output</h4>
             <pre className="text-xs whitespace-pre-wrap mb-3">{output}</pre>
 
-            {scores && (
-              <div className="grid grid-cols-2 gap-2">
+              {scores && (
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="retro-box-green p-2 text-center col-span-2">
+                    <div className="font-bold">{Math.round(scores.overall)}%</div>
+                    <div className="text-xs">Overall</div>
+                  </div>
                 <div className="retro-box p-2 text-center">
                   <div className="font-bold">{Math.round(scores.clarity)}</div>
                   <div className="text-xs">Clarity</div>
@@ -392,6 +400,10 @@ export function ChallengeDetailNew() {
               SUBMIT
             </button>
           </div>
+          {submitError && <p className="text-sm font-bold text-red-600">{submitError}</p>}
+          {submittedScore !== null && (
+            <div className="retro-box-green px-3 py-2 text-sm font-bold">Saved score: {submittedScore}%</div>
+          )}
         </div>
       </div>
 
@@ -527,6 +539,9 @@ export function ChallengeDetailNew() {
               {scores && (
                 <div className="space-y-2">
                   <div className="text-sm font-mono">Overall Score: <span className="font-bold">{Math.round(scores.overall)}%</span></div>
+                  {submittedScore !== null && (
+                    <div className="retro-box-green p-3 text-sm font-bold">Saved score: {submittedScore}%</div>
+                  )}
                   <div className="grid grid-cols-2 gap-2">
                     <div className="retro-box p-3 text-center">
                       <div className="font-bold">{Math.round(scores.clarity)}</div>

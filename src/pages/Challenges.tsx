@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/hooks/useUser';
 import { useQuota } from '@/hooks/useQuota';
 import { get } from '@/lib/api';
-import { ChevronRight, Lock, Brain, Zap } from 'lucide-react';
+import { Brain, Filter, Lock, Search, Sparkles, X, Zap } from 'lucide-react';
 
 interface Challenge {
   id: string;
@@ -41,6 +41,42 @@ const DIFFICULTY_LABELS: Record<string, string> = {
   expert: 'Expert',
 };
 
+const REFERENCE_CHALLENGES: Challenge[] = [
+  {
+    id: 'sample-1',
+    title: 'Smart Grocery List Generator',
+    description:
+      "Create an AI prompt that generates a customized grocery list based on a week's meal plan provided by the user. The prompt should take into account dietary preferences, number of servings, and ingredients to avoid.",
+    difficulty: 'intermediate',
+    category: 'Productivity',
+    points: 250,
+    is_premium: false,
+    success_rate: 0,
+  },
+  {
+    id: 'sample-2',
+    title: 'Precision Prompt Construction for AI Response Optimization',
+    description:
+      'Design a complex multi-part prompt aimed at eliciting highly specific and relevant responses from an AI model. Guide the AI toward advanced reasoning and contextual understanding.',
+    difficulty: 'expert',
+    category: 'Reasoning',
+    points: 400,
+    is_premium: false,
+    success_rate: 0,
+  },
+  {
+    id: 'sample-3',
+    title: 'Crafting a Marketing Campaign Prompt',
+    description:
+      'Design a prompt that elicits creative marketing campaign ideas for a new eco-friendly product. Emphasize clarity and specificity so ideas are actionable and aligned.',
+    difficulty: 'intermediate',
+    category: 'Marketing',
+    points: 200,
+    is_premium: false,
+    success_rate: 0,
+  },
+];
+
 export function Challenges() {
   const { profile } = useUser();
   const { quota } = useQuota();
@@ -49,6 +85,7 @@ export function Challenges() {
   const [categories, setCategories] = useState<string[]>([]);
   const [difficulties, setDifficulties] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     search: '',
     difficulty: 'all',
@@ -114,57 +151,120 @@ export function Challenges() {
     return DIFFICULTY_COLORS[difficulty] || '#2D5F4F';
   };
 
+  const visibleChallenges = challenges.length ? challenges : REFERENCE_CHALLENGES;
+  const activeFiltersCount = Number(filters.difficulty !== 'all') + Number(filters.category !== 'all');
+  const difficultyOptions = difficulties.length ? difficulties : ['beginner', 'intermediate', 'expert'];
+  const categoryOptions = categories.length ? categories : ['Productivity', 'Reasoning', 'Marketing'];
+
   return (
-    <div className="w-full min-h-screen bg-cream p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="argen-page">
+      <div className="argen-page-inner">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Challenges</h1>
-          <p className="text-gray-700">
-            Refine your prompt engineering skills with {challenges.length} challenges
-          </p>
+        <div className="mb-12 flex items-center justify-between gap-4">
+          <div>
+            <h1 className="argen-page-title challenges-title">
+              Structured
+              <br />
+              Challenges
+            </h1>
+            <p className="argen-page-subtitle">
+              {visibleChallenges.length || pagination.limit} available
+            </p>
+          </div>
+          <button className="argen-action challenges-generate">
+            <Sparkles size={17} />
+            Generate
+          </button>
         </div>
 
         {/* Filter Bar */}
-        <div className="retro-box p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <input
-              type="text"
-              placeholder="Search challenges..."
-              value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-              className="w-full p-3 border-2 border-black focus:outline-none bg-white"
-            />
-            <select
-              value={filters.difficulty}
-              onChange={(e) => handleFilterChange('difficulty', e.target.value)}
-              className="w-full p-3 border-2 border-black focus:outline-none bg-white font-mono"
+        <div className="mb-12 space-y-4">
+          <div className="challenges-search-row">
+            <div className="challenges-search-box">
+              <Search size={22} />
+              <input
+                type="text"
+                placeholder="Search challenges..."
+                value={filters.search}
+                onChange={(e) => handleFilterChange('search', e.target.value)}
+              />
+            </div>
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`challenges-filter-btn ${activeFiltersCount > 0 ? 'is-active' : ''}`}
             >
-              <option value="all">All Difficulties</option>
-              {difficulties.map((d) => (
-                <option key={d} value={d}>
-                  {DIFFICULTY_LABELS[d] || d}
-                </option>
-              ))}
-            </select>
-            <select
-              value={filters.category}
-              onChange={(e) => handleFilterChange('category', e.target.value)}
-              className="w-full p-3 border-2 border-black focus:outline-none bg-white font-mono"
-            >
-              <option value="all">All Categories</option>
-              {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-            {quota && (
-              <div className="retro-box-green p-3 font-mono text-sm flex items-center justify-between">
-                <span>Credits: {quota.remaining}/{quota.monthly_limit}</span>
-              </div>
-            )}
+              <Filter size={22} />
+              FILTERS {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+            </button>
           </div>
+
+          {showFilters && (
+            <div className="challenges-filter-panel">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-black">Filter Results</h3>
+                <button onClick={() => setShowFilters(false)} className="retro-btn px-3 py-2">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                <div className="filter-group">
+                  <h4>STATUS</h4>
+                  <div>
+                    {['ALL', 'COMPLETED', 'TODO'].map((status) => (
+                      <button key={status} className={status === 'ALL' ? 'is-selected' : ''}>
+                        {status}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="filter-group">
+                  <h4>DIFFICULTY</h4>
+                  <div>
+                    <button
+                      onClick={() => handleFilterChange('difficulty', 'all')}
+                      className={filters.difficulty === 'all' ? 'is-selected' : ''}
+                    >
+                      ALL
+                    </button>
+                    {difficultyOptions.map((d) => (
+                      <button
+                        key={d}
+                        onClick={() => handleFilterChange('difficulty', d)}
+                        className={filters.difficulty === d ? 'is-selected' : ''}
+                      >
+                        {(DIFFICULTY_LABELS[d] || d).toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="filter-group">
+                  <h4>CATEGORY</h4>
+                  <div>
+                    <button
+                      onClick={() => handleFilterChange('category', 'all')}
+                      className={filters.category === 'all' ? 'is-selected' : ''}
+                    >
+                      ALL
+                    </button>
+                    {categoryOptions.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => handleFilterChange('category', c)}
+                        className={filters.category === c ? 'is-selected' : ''}
+                      >
+                        {c.replace(/_/g, ' ').toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {quota && (
+                  <div className="retro-box-green p-3 font-mono text-sm flex items-center justify-between md:col-span-3">
+                    <span>Credits: {quota.remaining}/{quota.monthly_limit}</span>
+                  </div>
+                )}
+              </div>
+          </div>
+          )}
         </div>
 
         {/* Challenges Grid */}
@@ -172,95 +272,47 @@ export function Challenges() {
           <div className="text-center py-12">
             <p className="font-mono text-lg">Loading challenges...</p>
           </div>
-        ) : challenges.length === 0 ? (
-          <div className="retro-box p-12 text-center">
-            <p className="font-mono text-lg">No challenges found matching your filters.</p>
-          </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {challenges.map((challenge) => (
+            <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2">
+              {visibleChallenges.map((challenge) => (
                 <div
                   key={challenge.id}
-                  className="retro-box p-6 cursor-pointer hover:bg-black hover:text-cream transition-colors duration-200 group"
+                  className="challenge-card group"
                   onClick={() => handleChallengeClick(challenge.id)}
                 >
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-cream">
-                        {challenge.title}
-                      </h3>
-                      <div className="flex gap-2 flex-wrap">
-                        <span
-                          className="px-3 py-1 text-xs font-mono text-white border-2 border-black"
-                          style={{
-                            backgroundColor: getDifficultyColor(challenge.difficulty),
-                          }}
-                        >
-                          {DIFFICULTY_LABELS[challenge.difficulty]}
-                        </span>
-                        {challenge.is_premium && (
-                          <span className="px-3 py-1 text-xs font-mono bg-black text-cream border-2 border-black flex items-center gap-1">
-                            <Lock size={12} /> Premium
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <ChevronRight
-                      size={24}
-                      className="group-hover:translate-x-1 transition-transform"
-                    />
+                  <div className="mb-8 flex gap-2">
+                    <span className="challenge-badge">
+                      {DIFFICULTY_LABELS[challenge.difficulty]?.toUpperCase()}
+                    </span>
+                    {challenge.is_premium && (
+                      <span className="challenge-badge flex items-center gap-1">
+                        <Lock size={12} /> PREMIUM
+                      </span>
+                    )}
                   </div>
 
-                  {/* Description */}
-                  <p className="text-sm mb-4 line-clamp-2 group-hover:text-cream">
+                  <h3 className="challenge-card-title">
+                    {challenge.title}
+                  </h3>
+
+                  <p className="challenge-card-description">
                     {challenge.description}
                   </p>
 
                   {/* Stats */}
-                  <div className="flex justify-between items-center text-xs font-mono border-t-2 border-black pt-4">
-                    <div className="flex items-center gap-2">
-                      <Zap size={14} /> {challenge.points} points
-                    </div>
-                    {challenge.success_rate !== undefined && (
-                      <div className="flex items-center gap-2">
-                        <Brain size={14} /> {challenge.success_rate}% success
-                      </div>
-                    )}
+                  <div className="challenge-card-stats">
+                    <span>
+                      <Brain size={14} />
+                      {challenge.success_rate || 0}% success rate
+                    </span>
+                    <span>
+                      <Zap size={14} />
+                      {challenge.points} points
+                    </span>
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="retro-box p-4 flex justify-between items-center">
-              <button
-                onClick={() =>
-                  setPagination({
-                    ...pagination,
-                    offset: Math.max(0, pagination.offset - pagination.limit),
-                  })
-                }
-                disabled={pagination.offset === 0}
-                className="px-6 py-2 border-2 border-black font-mono disabled:opacity-50 disabled:cursor-not-allowed hover:bg-black hover:text-cream transition-colors"
-              >
-                Previous
-              </button>
-              <span className="font-mono">
-                Page {Math.floor(pagination.offset / pagination.limit) + 1}
-              </span>
-              <button
-                onClick={() =>
-                  setPagination({
-                    ...pagination,
-                    offset: pagination.offset + pagination.limit,
-                  })
-                }
-                className="px-6 py-2 border-2 border-black font-mono hover:bg-black hover:text-cream transition-colors"
-              >
-                Next
-              </button>
             </div>
           </>
         )}

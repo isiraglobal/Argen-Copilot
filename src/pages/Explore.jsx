@@ -1,120 +1,161 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '../hooks/useUser';
-import { fetchApi } from '../lib/api';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 
-export default function Explore() {
-  const { user, loading: userLoading } = useUser();
-  const navigate = useNavigate();
-  const [challenges, setChallenges] = useState([]);
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    totalSubmissions: 0,
-    avgScore: 0,
-    topCreators: [],
-  });
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
+const quotes = [
+  ['The best way to predict the future is to create it.', 'Peter Drucker'],
+  ['Excellence is not a skill, it is an attitude.', 'Ralph Marston'],
+  ['Success is the sum of small efforts repeated daily.', 'Robert Collier'],
+  ['Skill comes from consistent practice and refinement.', 'Anonymous'],
+];
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+const courses = [
+  {
+    id: 'prompt-foundations',
+    title: 'Prompt Engineering Foundations',
+    total: 18,
+    points: 1800,
+    completed: 4,
+    premium: false,
+  },
+  {
+    id: 'workplace-writing',
+    title: 'Workplace Writing With AI',
+    total: 22,
+    points: 2400,
+    completed: 0,
+    premium: false,
+  },
+  {
+    id: 'analysis-summarization',
+    title: 'Analysis & Summarization Systems',
+    total: 16,
+    points: 2100,
+    completed: 0,
+    premium: true,
+  },
+  {
+    id: 'ai-governance',
+    title: 'AI Governance Decision Practice',
+    total: 12,
+    points: 1600,
+    completed: 0,
+    premium: true,
+  },
+];
 
-  const fetchStats = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchApi('/api/analytics/dashboard');
-      setStats(data || {});
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (userLoading || loading) return <div className="p-8">Loading...</div>;
+function CourseCard({ course }) {
+  const percentage = Math.round((course.completed / course.total) * 100);
 
   return (
-    <div className="min-h-screen bg-cream p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-12 border-4 border-dark p-6 retro-box">
-          <h1 className="text-4xl font-bold font-mono text-dark mb-2">Explore Challenges</h1>
-          <p className="text-dark text-lg">Discover and practice prompt engineering</p>
-        </div>
+    <Link to={`/Challenges?course=${course.id}`} className="course-card">
+      <div className="course-eyebrow">Training Course</div>
+      <h3>{course.title}</h3>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-          <div className="retro-box p-6">
-            <div className="text-3xl font-bold text-green-dark">{stats.totalUsers || 0}</div>
-            <div className="text-dark text-sm mt-2">Active Users</div>
+      {course.completed > 0 && (
+        <div className="course-progress">
+          <div className="course-progress-track">
+            <div style={{ width: `${percentage}%` }} />
           </div>
-          <div className="retro-box p-6">
-            <div className="text-3xl font-bold text-green-dark">{stats.totalSubmissions || 0}</div>
-            <div className="text-dark text-sm mt-2">Submissions</div>
-          </div>
-          <div className="retro-box p-6">
-            <div className="text-3xl font-bold text-green-dark">{stats.avgScore || 0}</div>
-            <div className="text-dark text-sm mt-2">Avg Score</div>
-          </div>
-          <div className="retro-box p-6">
-            <div className="text-3xl font-bold text-green-dark">{stats.topCreators?.length || 0}</div>
-            <div className="text-dark text-sm mt-2">Top Creators</div>
+          <div className="course-progress-label">
+            <CheckCircle2 size={13} />
+            {percentage}% COMPLETE
           </div>
         </div>
+      )}
 
-        {/* Filter Bar */}
-        <div className="mb-8 flex gap-4 flex-wrap">
-          {['all', 'beginner', 'intermediate', 'advanced'].map((difficulty) => (
-            <button
-              key={difficulty}
-              onClick={() => setFilter(difficulty)}
-              className={`px-6 py-3 border-3 border-dark font-mono font-bold transition-colors ${
-                filter === difficulty
-                  ? 'retro-btn-primary'
-                  : 'retro-btn'
-              }`}
-            >
-              {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-            </button>
-          ))}
+      <div className="course-stats">
+        <div>
+          <strong>{course.total}</strong>
+          <span>Challenges</span>
         </div>
-
-        {/* Challenges Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {challenges.length === 0 ? (
-            <div className="col-span-full text-center py-16">
-              <p className="text-dark text-lg">No challenges found</p>
-            </div>
-          ) : (
-            challenges
-              .filter((c) => filter === 'all' || c.difficulty === filter)
-              .map((challenge) => (
-                <div
-                  key={challenge.id}
-                  onClick={() => navigate(`/challenges/${challenge.id}`)}
-                  className="retro-box p-6 cursor-pointer hover:retro-box-green transition-all"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-bold text-dark">{challenge.title}</h3>
-                    {challenge.completedByUser && (
-                      <span className="text-2xl">✓</span>
-                    )}
-                  </div>
-                  <div className="flex gap-2 mb-4">
-                    <span className="px-3 py-1 border-2 border-dark text-sm font-mono text-dark">
-                      {challenge.difficulty}
-                    </span>
-                    <span className="px-3 py-1 border-2 border-dark text-sm font-mono text-dark">
-                      +{challenge.points} pts
-                    </span>
-                  </div>
-                  <p className="text-dark text-sm">{challenge.category}</p>
-                </div>
-              ))
-          )}
+        <div>
+          <strong>{course.points}</strong>
+          <span>Points</span>
         </div>
+        {course.completed > 0 && (
+          <div>
+            <strong>{course.completed}</strong>
+            <span>Completed</span>
+          </div>
+        )}
       </div>
-    </div>
+
+      {course.premium && <div className="course-pro">PRO</div>}
+    </Link>
+  );
+}
+
+export default function Explore() {
+  const [quote, author] = useMemo(() => {
+    const index = Math.floor(Date.now() / 86400000) % quotes.length;
+    return quotes[index];
+  }, []);
+
+  return (
+    <main className="argen-page explore-page">
+      <div className="argen-page-inner explore-inner">
+        <section className="explore-hero">
+          <h1>Good afternoon, Learner</h1>
+          <div className="quote-card">
+            <Sparkles size={26} />
+            <p>"{quote}"</p>
+            <span>— {author}</span>
+          </div>
+        </section>
+
+        <section className="explore-metrics">
+          <article>
+            <span>Progress</span>
+            <strong>420</strong>
+            <small>Points</small>
+          </article>
+          <article>
+            <span>Consistency</span>
+            <strong>3</strong>
+            <small>Current Streak</small>
+            <em>Best: 8 days</em>
+          </article>
+          <article className="plan-card">
+            <span>Plan</span>
+            <strong>Individual</strong>
+            <small>4 Completed</small>
+          </article>
+        </section>
+
+        <section className="continue-section">
+          <h2>Continue Training</h2>
+          <Link to="/Challenges?course=prompt-foundations" className="continue-card">
+            <div>
+              <span>In Progress</span>
+              <h3>Prompt Engineering Foundations</h3>
+            </div>
+            <ArrowRight size={34} />
+            <div className="continue-progress">
+              <div><span style={{ width: '22%' }} /></div>
+              <p>4/18 COMPLETED</p>
+            </div>
+          </Link>
+        </section>
+
+        <section className="courses-section">
+          <div className="section-heading-row">
+            <div>
+              <h2>Training Courses</h2>
+              <p>Structured prompt engineering frameworks and practice paths</p>
+            </div>
+            <Link to="/Challenges" className="argen-action">
+              View All
+            </Link>
+          </div>
+
+          <div className="course-grid">
+            {courses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }

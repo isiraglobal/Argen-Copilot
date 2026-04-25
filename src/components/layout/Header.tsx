@@ -1,49 +1,54 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { Bell, LogIn, LogOut, Menu, ScanLine, User } from 'lucide-react';
 import { useUser } from '@/hooks/useUser';
 
 export function Header() {
   const { isAuthenticated } = useUser();
+  const location = useLocation();
+  const isHome = location.pathname === '/' || location.pathname.toLowerCase() === '/home';
+
+  if (isHome) return null;
 
   return (
-    <header className="bg-cream border-b-4 border-black">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <img 
-            src="/logo.svg" 
-            alt="ArGen Logo" 
-            className="h-10 w-auto"
-            onError={(e) => {
-              // Fallback if logo not found - just show text
-              e.currentTarget.style.display = 'none';
-            }}
-          />
-          <span className="font-bold text-xl">ArGen</span>
+    <>
+      <header className="argen-app-header">
+        <div className="argen-left-actions">
+          <button className="argen-icon-btn" aria-label="Open menu">
+            <Menu size={24} />
+          </button>
+
+          <Link to="/" className="argen-logo-link" aria-label="ArGen home">
+            <img src="/logo.png" alt="ArGen" />
+          </Link>
+        </div>
+
+        <div className="argen-header-actions">
+          <button className="argen-icon-btn" aria-label="Notifications">
+            <Bell size={20} />
+          </button>
+          <Link to="/profile" className="argen-icon-btn argen-icon-btn-dark" aria-label="Profile">
+            <User size={22} />
+          </Link>
+          <Link to={isAuthenticated ? '/profile' : '/login'} className="argen-icon-btn" aria-label={isAuthenticated ? 'Account' : 'Sign in'}>
+            {isAuthenticated ? <LogOut size={22} /> : <LogIn size={22} />}
+          </Link>
+        </div>
+      </header>
+
+      <nav className="argen-bottom-nav" aria-label="Primary">
+        <Link to="/">
+          <ScanLine size={24} />
+          <span>Home</span>
         </Link>
-
-        {/* Navigation */}
-        <nav className="flex items-center gap-6">
-          <Link to="/challenges" className="font-bold hover:underline">
-            Challenges
-          </Link>
-          <Link to="/explore" className="font-bold hover:underline">
-            Explore
-          </Link>
-          <Link to="/teams" className="font-bold hover:underline">
-            Teams
-          </Link>
-
-          {isAuthenticated ? (
-            <Link to="/profile" className="retro-btn">
-              Profile
-            </Link>
-          ) : (
-            <Link to="/" className="retro-btn-primary">
-              Sign In
-            </Link>
-          )}
-        </nav>
-      </div>
-    </header>
+        <Link to="/challenges">
+          <ScanLine size={24} />
+          <span>Evaluate</span>
+        </Link>
+        <Link to="/profile">
+          <User size={24} />
+          <span>Profile</span>
+        </Link>
+      </nav>
+    </>
   );
 }

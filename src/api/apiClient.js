@@ -1,24 +1,29 @@
-/**
- * apiClient.js — Drop-in replacement for Base44 SDK
- * Replace BASE_URL with your own backend URL.
- * Replace auth methods with your own auth provider (Supabase, Firebase, Auth0, etc.)
- */
+import { supabase } from '../lib/supabase';
 
-const BASE_URL = "https://your-api.example.com";
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8787';
+
+async function authHeaders() {
+  const session = supabase ? (await supabase.auth.getSession()).data.session : null;
+  return {
+    ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+    "Content-Type": "application/json",
+  };
+}
 
 export const auth = {
   me: async () => {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("Not authenticated");
-    const res = await fetch(`${BASE_URL}/auth/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    if (!supabase) throw new Error("Not authenticated");
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+    const res = await fetch(`${BASE_URL}/api/user/profile`, { headers: await authHeaders() });
     if (!res.ok) throw new Error("Auth failed");
-    return res.json();
+    const profile = await res.json();
+    return { ...profile, email: user.email, full_name: profile.name || user.email };
   },
   logout: (redirectUrl) => {
-    localStorage.removeItem("token");
-    window.location.href = redirectUrl || "/";
+    supabase?.auth.signOut().finally(() => {
+      window.location.href = redirectUrl || "/";
+    });
   },
   redirectToLogin: (nextUrl) => {
     window.location.href = `/login?next=${encodeURIComponent(nextUrl || "/")}`;
@@ -27,10 +32,9 @@ export const auth = {
     try { await auth.me(); return true; } catch { return false; }
   },
   updateMe: async (data) => {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/auth/me`, {
+    const res = await fetch(`${BASE_URL}/api/user/profile`, {
       method: "PATCH",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: await authHeaders(),
       body: JSON.stringify(data),
     });
     return res.json();
@@ -39,30 +43,26 @@ export const auth = {
 
 function makeEntity(name) {
   const base = `${BASE_URL}/entities/${name}`;
-  const headers = () => ({
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-    "Content-Type": "application/json",
-  });
   return {
     list: async (sort, limit) => {
-      const res = await fetch(`${base}?sort=${sort || ""}&limit=${limit || 50}`, { headers: headers() });
+      const res = await fetch(`${base}?sort=${sort || ""}&limit=${limit || 50}`, { headers: await authHeaders() });
       return res.json();
     },
     filter: async (query, sort, limit) => {
       const params = new URLSearchParams({ filter: JSON.stringify(query), sort: sort || "", limit: limit || 50 });
-      const res = await fetch(`${base}?${params}`, { headers: headers() });
+      const res = await fetch(`${base}?${params}`, { headers: await authHeaders() });
       return res.json();
     },
     create: async (data) => {
-      const res = await fetch(base, { method: "POST", headers: headers(), body: JSON.stringify(data) });
+      const res = await fetch(base, { method: "POST", headers: await authHeaders(), body: JSON.stringify(data) });
       return res.json();
     },
     update: async (id, data) => {
-      const res = await fetch(`${base}/${id}`, { method: "PATCH", headers: headers(), body: JSON.stringify(data) });
+      const res = await fetch(`${base}/${id}`, { method: "PATCH", headers: await authHeaders(), body: JSON.stringify(data) });
       return res.json();
     },
     delete: async (id) => {
-      const res = await fetch(`${base}/${id}`, { method: "DELETE", headers: headers() });
+      const res = await fetch(`${base}/${id}`, { method: "DELETE", headers: await authHeaders() });
       return res.json();
     },
   };
@@ -123,10 +123,9 @@ export const integrations = {
 
 export const functions = {
   invoke: async (name, payload) => {
-    const token = localStorage.getItem("token");
     const res = await fetch(`${BASE_URL}/functions/${name}`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: await authHeaders(),
       body: JSON.stringify(payload || {}),
     });
     const data = await res.json();
