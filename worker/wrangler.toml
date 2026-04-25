@@ -4,3 +4,8 @@ compatibility_date = "2024-01-01"
 
 [vars]
 ENVIRONMENT = "production"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "argen-db"
+database_id = "3efcdf5c-0164-48cc-ad9d-d4c5ef24f039"

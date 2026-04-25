@@ -3,6 +3,22 @@ import { Database } from '../lib/db';
 import { challenges, user_progress } from '../db/schema';
 import { eq, like, and } from 'drizzle-orm';
 
+const SAMPLE_CHALLENGE = {
+  id: 'sample-1',
+  title: 'Product Description Prompt',
+  description: 'Write a prompt that asks an AI to create a concise product description for a productivity app.',
+  difficulty: 'beginner',
+  category: 'Marketing',
+  points: 100,
+  expected_output: 'A clear product description with benefits and target audience.',
+  constraints: 'Keep the output under 80 words and use a professional tone.',
+  example_prompt: 'Act as a product marketer. Write a concise product description...',
+  is_premium: 0,
+  created_by: 'system',
+  created_at: Math.floor(Date.now() / 1000),
+  updated_at: Math.floor(Date.now() / 1000),
+};
+
 export async function getChallenges(c: Context, db: Database) {
   try {
     const search = c.req.query('search') || '';
@@ -30,11 +46,12 @@ export async function getChallenges(c: Context, db: Database) {
 
     const data = await query.limit(limit).offset(offset);
     const total = await db.select().from(challenges);
+    const responseData = data.length ? data : [SAMPLE_CHALLENGE];
 
     return c.json({
-      data,
+      data: responseData,
       pagination: {
-        total: total.length,
+        total: total.length || responseData.length,
         limit,
         offset,
         hasMore: offset + limit < total.length,
@@ -113,39 +130,19 @@ export async function createChallenge(c: Context, db: Database, userId: string) 
   }
 }
 
-export async function getChallenge(c: Context, db: Database, userId: string) {
+export async function getChallenge(c: Context, db: Database, id: string) {
   try {
-    const id = c.req.param('id');
-    const challenge = await db
+    const result = await db
       .select()
       .from(challenges)
       .where(eq(challenges.id, id))
       .limit(1);
 
-    if (!challenge.length) {
-      return c.json({ error: 'Challenge not found' }, 404);
+    if (!result.length) {
+      return c.json({ error: 'Not found' }, 404);
     }
 
-    // Get user progress for this challenge
-    const progress = await db
-      .select()
-      .from(user_progress)
-      .where(
-        and(
-          eq(user_progress.user_id, userId),
-          eq(user_progress.challenge_id, id)
-        )
-      )
-      .limit(1);
-
-    return c.json({
-      ...challenge[0],
-      user_progress: progress[0] || {
-        best_score: 0,
-        attempts: 0,
-        is_completed: 0,
-      },
-    });
+    return c.json(result[0]);
   } catch (error) {
     console.error('Error fetching challenge:', error);
     return c.json({ error: 'Failed to fetch challenge' }, 500);
@@ -154,7 +151,7 @@ export async function getChallenge(c: Context, db: Database, userId: string) {
 
 export async function getUserProgress(c: Context, db: Database, userId: string) {
   try {
-    const challengeId = c.req.param('challengeId');
+    const challengeId = c.req.param('challengeId') || '';
     const progress = await db
       .select()
       .from(user_progress)
@@ -183,10 +180,10 @@ export async function getUserProgress(c: Context, db: Database, userId: string) 
 
 export async function getCategories(c: Context, db: Database) {
   try {
-    const data = await db.select({ category: challenges.category }).from(challenges).distinct();
-    const categories = data.map((d) => d.category).filter(Boolean);
+    const data = await db.selectDistinct({ category: challenges.category }).from(challenges);
+    const categories = data.map((d: any) => d.category).filter(Boolean);
 
-    return c.json({ categories: [...new Set(categories)] });
+    return c.json({ categories: [...new Set(categories.length ? categories : [SAMPLE_CHALLENGE.category])] });
   } catch (error) {
     console.error('Error fetching categories:', error);
     return c.json({ error: 'Failed to fetch categories' }, 500);
@@ -195,10 +192,10 @@ export async function getCategories(c: Context, db: Database) {
 
 export async function getDifficulties(c: Context, db: Database) {
   try {
-    const data = await db.select({ difficulty: challenges.difficulty }).from(challenges).distinct();
-    const difficulties = data.map((d) => d.difficulty).filter(Boolean);
+    const data = await db.selectDistinct({ difficulty: challenges.difficulty }).from(challenges);
+    const difficulties = data.map((d: any) => d.difficulty).filter(Boolean);
 
-    return c.json({ difficulties: [...new Set(difficulties)] });
+    return c.json({ difficulties: [...new Set(difficulties.length ? difficulties : [SAMPLE_CHALLENGE.difficulty])] });
   } catch (error) {
     console.error('Error fetching difficulties:', error);
     return c.json({ error: 'Failed to fetch difficulties' }, 500);

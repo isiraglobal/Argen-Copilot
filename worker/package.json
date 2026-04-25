@@ -8,13 +8,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "^4.0.0",
-    "drizzle-orm": "^0.30.0"
+    "drizzle-orm": "^0.30.0",
+    "hono": "^4.0.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260425.1",
     "@types/node": "^20.0.0",
+    "miniflare": "^3.0.0",
     "typescript": "^5.0.0",
-    "wrangler": "^3.30.0",
-    "miniflare": "^3.0.0"
+    "wrangler": "^3.30.0"
   }
 }

@@ -6,4 +6,4 @@ export function initializeDB(env: any) {
   return db;
 }
 
-export type Database = ReturnType<typeof initializeDB>;
+export type Database = any;

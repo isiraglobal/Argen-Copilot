@@ -105,13 +105,6 @@ app.post('/api/challenges', (c) =>
   })(c)
 );
 
-app.get('/api/challenges/:id', (c) =>
-  requireAuth(async (c, userId) => {
-    const db = initializeDB(c.env);
-    return challengeHandlers.getChallenge(c, db, userId);
-  })(c)
-);
-
 app.get('/api/challenges/categories', (c) => {
   const db = initializeDB(c.env);
   return challengeHandlers.getCategories(c, db);
@@ -120,6 +113,12 @@ app.get('/api/challenges/categories', (c) => {
 app.get('/api/challenges/difficulties', (c) => {
   const db = initializeDB(c.env);
   return challengeHandlers.getDifficulties(c, db);
+});
+
+app.get('/api/challenges/:id', (c) => {
+  const db = initializeDB(c.env);
+  const id = c.req.param('id');
+  return challengeHandlers.getChallenge(c, db, id);
 });
 
 app.get('/api/user/progress/:challengeId', (c) =>
@@ -134,15 +133,24 @@ app.get('/api/user/progress/:challengeId', (c) =>
 // ============================================================================
 
 app.post('/api/submissions', rateLimit(10, 60), (c) =>
-  requireAuth(async (c, userId) => submissionHandlers.submitPrompt(c, userId))(c)
+  requireAuth(async (c, userId) => {
+    const db = initializeDB(c.env);
+    return submissionHandlers.submitPrompt(c, db, userId);
+  })(c)
 );
 
 app.get('/api/submissions', (c) =>
-  requireAuth(async (c, userId) => submissionHandlers.listSubmissions(c, userId))(c)
+  requireAuth(async (c, userId) => {
+    const db = initializeDB(c.env);
+    return submissionHandlers.listSubmissions(c, db, userId);
+  })(c)
 );
 
 app.get('/api/submissions/:id', (c) =>
-  requireAuth(async (c, userId) => submissionHandlers.getSubmission(c, userId))(c)
+  requireAuth(async (c, userId) => {
+    const db = initializeDB(c.env);
+    return submissionHandlers.getSubmission(c, db, userId);
+  })(c)
 );
 
 app.delete('/api/submissions/:id', (c) =>
